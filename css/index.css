@@ -1,0 +1,44 @@
+#my_body {
+  width: 280px;
+  user-select: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 3px;
+  position: fixed;
+  right: 0;
+  bottom: 20px;
+}
+li{
+  list-style: none;
+}
+.my_dom_highlight {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 7px 6px rgba(0, 0, 0, 0.2), 2px 4px 6px rgba(0, 0, 0, 0.5) !important;
+  border: 3px dotted pink;
+  z-index: 99999;
+}
+#my_title {
+  font-style: oblique;
+  font-size: 15px;
+  color: red;
+}
+#my_motto {
+  color: #fff;
+  background-color: #00cfbe;
+  font-weight: 500;
+  padding: 3px 0;
+}
+#my_ul {
+  font-size: 14px;
+}
+#my_ul li {
+  padding: 4px 2px;
+}
+#my_ul .time {
+  color: red;
+  font-weight: 500;
+}
+
+.text-center {
+  text-align: center;
+}
