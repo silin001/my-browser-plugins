@@ -19,13 +19,14 @@
     }
   ],
   "action": {
-    "default_icon": "images/icon1.png",
+    "default_icon": "images/icon3.png",
     "default_title": "欢迎使用摸鱼办插件",
     "default_popup": "./popup/popup.html"
   },
   "permissions": [
     "contextMenus",
     "tabs",
+    "activeTab",
     "notifications",
     "declarativeNetRequest",
     "storage"
