@@ -1,6 +1,6 @@
 {
-  "name": "摸鱼办11",
-  "version": "0.0.0.1",
+  "name": "摸鱼办",
+  "version": "0.0.1",
   "manifest_version": 2,
   "description": "下班、放假时间倒计时；上班摸鱼名言！",
   "background": {

@@ -1,11 +1,12 @@
 /*
  * @Date: 2024-05-29 15:32:23
- * @LastEditTime: 2024-05-29 17:04:59
+ * @LastEditTime: 2024-05-30 09:26:14
  * @Description: 下班倒计时、放假倒计时
- * @FilePath: \yike-design-devd:\web_si\my_webDemo\my-projectFrame\my-edge-plugins\js\countdown.js
+ * @FilePath: \yike-design-devd:\web_si\my_webDemo\my-projectFrame\my-browser-plugins\js\countdown.js
  */
 
 
+const week = "日一二三四五六".charAt(new Date().getDay());
 /** 创建基础dom */
 function createPage (title) {
   const page = $('<div id="my_body"></div>')
@@ -40,8 +41,7 @@ function createConcentDom () {
 }
 
 function setTitle () {
-  const str ="日一二三四五六".charAt(new Date().getDay());
-  $('#my_title').text(`今天是星期${str}、摸鱼办提醒您：`);
+  $('#my_title').text(`今天是星期${week}、摸鱼办提醒您：`);
 }
 
 /** 根据当前时间计算 下班倒计时 */

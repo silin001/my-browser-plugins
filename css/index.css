@@ -3,24 +3,23 @@
   user-select: none;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  padding: 3px;
   position: fixed;
-  right: 0;
-  bottom: 20px;
+  right: 10px;
+  bottom: 30px;
 }
 li{
   list-style: none;
 }
 .my_dom_highlight {
-  background-color: rgba(0, 0, 0, 0.4) !important;
+  background-color: rgba(0, 0, 0, 0.55) !important;
   box-shadow: 0 7px 6px rgba(0, 0, 0, 0.2), 2px 4px 6px rgba(0, 0, 0, 0.5) !important;
-  border: 3px dotted pink;
+  border: 5px double red;
   z-index: 99999;
 }
 #my_title {
   font-style: oblique;
   font-size: 15px;
-  color: red;
+  color: #fff;
 }
 #my_motto {
   color: #fff;
@@ -29,16 +28,24 @@ li{
   padding: 3px 0;
 }
 #my_ul {
+  padding: 4px 2px;
   font-size: 14px;
 }
 #my_ul li {
   padding: 4px 2px;
+  color: #fff;
 }
 #my_ul .time {
+  font-weight: 600;
   color: red;
-  font-weight: 500;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .text-center {
   text-align: center;
+}
+.flex-row{
+  display: flex;
+  justify-items: flex-start;
 }
