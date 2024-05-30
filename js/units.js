@@ -1,8 +1,8 @@
 /*
  * @Date: 2024-05-16 14:30:45
- * @LastEditTime: 2024-05-29 15:40:38
+ * @LastEditTime: 2024-05-30 17:08:46
  * @Description:
- * @FilePath: \yike-design-devd:\web_si\my_webDemo\my-projectFrame\my-edge-plugins\js\units.js
+ * @FilePath: \yike-design-devd:\web_si\my_webDemo\my-projectFrame\my-browser-plugins\js\units.js
  */
 
 /** 存放全局定时器 */
@@ -29,7 +29,9 @@ function formatDate (date = new Date()) {
 /** setTimeout轮询 */
 function doSomething (fun, time = 1) {
  // 在操作完成后，再次设置延迟时间，继续执行 doSomething 函数
- fun()
+ if (typeof fun === "function") {
+  fun()
+ }
  let timer = setTimeout(() => {
   doSomething(fun, time)
  }, time * 1000);
