@@ -1,12 +1,24 @@
 #my_body {
-  width: 280px;
-  user-select: none;
+  /* user-select: none; */
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   position: fixed;
-  right: 10px;
+  right: 15px;
   bottom: 30px;
 }
+
+#my_box {
+  width: 280px;
+}
+
+#my_icon {
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+  position: relative;
+  z-index: 99;
+}
+
 li{
   list-style: none;
 }
@@ -15,6 +27,12 @@ li{
   box-shadow: 0 7px 6px rgba(0, 0, 0, 0.2), 2px 4px 6px rgba(0, 0, 0, 0.5) !important;
   border: 5px double red;
   z-index: 99999;
+}
+.show{
+  display: block;
+}
+.hide{
+  display: none;
 }
 #my_title {
   font-style: oblique;
@@ -28,7 +46,6 @@ li{
   padding: 3px 0;
 }
 #my_ul {
-  padding: 4px 2px;
   font-size: 14px;
 }
 #my_ul li {

@@ -1,21 +1,24 @@
 /*
  * @Date: 2024-05-29 15:32:23
- * @LastEditTime: 2024-05-30 09:26:14
+ * @LastEditTime: 2024-06-24 20:01:25
  * @Description: 下班倒计时、放假倒计时
  * @FilePath: \yike-design-devd:\web_si\my_webDemo\my-projectFrame\my-browser-plugins\js\countdown.js
  */
 
-
 const week = "日一二三四五六".charAt(new Date().getDay());
 /** 创建基础dom */
 function createPage (title) {
-  const page = $('<div id="my_body"></div>')
+  const page = $('<div id="my_body" title="双击可隐藏哦"></div>')
+  const box = $('<div id="my_box"></div>')
+  const icon = $('<div id="my_icon" class="hide" title="单击显示"></div>')
   const tit = $(`<div id="my_title">${title}</div>`)
   const motto = $(`<div id="my_motto" class="text-center"></div>`)
-  const con = $('<ul id="my_ul"></ul>')
-  page.append(tit)
-  page.append(motto)
-  page.append(con)
+  const con = $('<div id="my_ul"></div>')
+  box.append(tit)
+  box.append(motto)
+  box.append(con)
+  page.append(box)
+  page.append(icon)
   $('body').append(page)
   setTitle()
   createConcentDom()
@@ -86,7 +89,7 @@ function calculateTimeUntilClosing (start = 9, end = 17) {
 function countdownToWorkFun () {
   const { state, hours, minutes, seconds } = calculateTimeUntilClosing()
   if (state) {
-    $('.countdownToWork').text('兄弟，下班时间到了！准备下班，记得打卡！')
+    $('.countdownToWork').text('兄弟，下班时间到了！下班记得打卡！')
     return
   }
   $('.countdownToWork .hour').text(hours);
@@ -119,3 +122,89 @@ function weekendCountdownFun (weekTime) {
   $('.weekendCountdown .hour').text(shengyuH)
   $('.weekendCountdown .min').text(shengyuM)
 }
+
+
+
+
+/** 格言 */
+function mottoFun () {
+  const mottoList = [
+    '职场三连： 摸鱼、摆烂、等下班',
+    '偷的浮生半日闲，明天依旧打工人',
+    '人生不过三万天，打工一天又一天',
+    '枯藤老树昏鸦，上班摸鱼下班回家',
+    '人生得意须尽欢，周末双休不加班',
+    '月薪两千五，命比咖啡苦',
+    '上班的我风都吹的倒，下班的我狗都追不到',
+    '虚情假意上班，真心实意下班',
+    '上辈子作恶多端，这辈子早起上班',
+    '磨刀不误砍柴工，玩会手机再开工',
+  ]
+  const txt = mottoList[Math.floor(Math.random() * 10)]
+  $('#my_motto').text(txt)
+}
+
+
+
+
+/** 边界情况处理 */
+function initBoundary () {
+  if (['日', '六'].includes(week)) {
+    // 清空时间dom内容
+    $('#my_ul').text('已经是周末啦，要好好休息啊！')
+    return
+  }
+  // if (['日', '六'].includes(week)) {
+  //   // 清空时间dom内容
+  //   $('#my_ul').text('已经是周末啦，要好好休息啊！')
+  //   return
+  // }
+}
+
+
+/** 初始化 */
+function myInit () {
+  // 挂载 dom
+  createPage()
+  // 格言初始化
+  mottoFun()
+  // 边界情况处理
+  initBoundary()
+  // 周五放假倒计时
+  weekendCountdownFun(getThisWeek5(formatDate()))
+}
+// ======================================================初始化
+myInit()
+
+
+// ===================================================点击事件
+/** 鼠标移入移出弹框dom添加class */
+$(function () {
+  // const meat = '<meta name="referrer" content="no-referrer" />'
+  // $('head').append(meat)
+  $("#my_body").mouseover(function () {
+    $(this).addClass('my_dom_highlight')
+  }).mouseout(function () {
+    $(this).removeClass('my_dom_highlight');
+  });
+});
+
+
+
+
+/** 双击事件隐藏dom、显示icon */
+$("#my_body").dblclick(function (e) {
+  e.stopPropagation()
+  $("#my_box").hide(300)
+  // 这里要使用chrome.extension.getURL('本地路径') 生成一个可识别的url
+  // 如果manifest_version是v3版本， 则应该用 chrome.runtime.getURL
+  const imgUrl = chrome.runtime.getURL("/images/icon1.png");
+  // const bennerImage = "https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e0cca2ddb9e34394a45a5e5d17f6209f~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=373&h=348&s=57889&e=png&b=fcfcfc";
+  $("#my_icon").css("background-image", "url(" + imgUrl + ")").show(600)
+},);
+/** 点击icon,隐藏icon、显示dom  */
+$("#my_icon").click(function (e) {
+  e.stopPropagation()
+  $("#my_icon").hide(400)
+  $("#my_box").show(600)
+});
