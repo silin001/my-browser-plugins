@@ -7,9 +7,13 @@ function startTime () {
   setTimeout(() => {
     doSomething(mottoFun, 10)
   }, 10 * 1000)
-  // 下班倒计时更新
+  // 5.30下班倒计时更新
   setTimeout(() => {
-    doSomething(countdownToWorkFun)
+    doSomething(countdownToWorkFun, 1,'530')
+  }, 1000)
+  // 6下班倒计时更新
+  setTimeout(() => {
+    doSomething(countdownToWorkFun,1)
   }, 1000)
   // 放假倒计时
   setTimeout(() => {

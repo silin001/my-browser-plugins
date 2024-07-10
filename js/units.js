@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-05-16 14:30:45
- * @LastEditTime: 2024-05-30 17:08:46
+ * @LastEditTime: 2024-07-10 09:28:04
  * @Description:
  * @FilePath: \yike-design-devd:\web_si\my_webDemo\my-projectFrame\my-browser-plugins\js\units.js
  */
@@ -27,13 +27,14 @@ function formatDate (date = new Date()) {
 
 
 /** setTimeout轮询 */
-function doSomething (fun, time = 1) {
+function doSomething (fun, time, closingTime) {
+ console.log('🚀🚀 ~ doSomething ~ closingTime:', closingTime)
  // 在操作完成后，再次设置延迟时间，继续执行 doSomething 函数
  if (typeof fun === "function") {
-  fun()
+  fun(closingTime)
  }
  let timer = setTimeout(() => {
-  doSomething(fun, time)
+  doSomething(fun, time, closingTime)
  }, time * 1000);
  myTimerList.push(timer)
 }

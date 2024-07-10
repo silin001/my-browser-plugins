@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-05-29 15:32:23
- * @LastEditTime: 2024-06-24 20:01:25
+ * @LastEditTime: 2024-07-10 14:32:54
  * @Description: 下班倒计时、放假倒计时
  * @FilePath: \yike-design-devd:\web_si\my_webDemo\my-projectFrame\my-browser-plugins\js\countdown.js
  */
@@ -26,18 +26,23 @@ function createPage (title) {
 
 /** 创建内容dom */
 function createConcentDom () {
-  const dom = $(`
-        <li class="countdownToWork">
-        距离下班时间：
-         <span class="time hour"></span>小时
-         <span class="time min"></span>分
-         <span class="time seconds"></span>秒
-         </li>
-        <li class="weekendCountdown">
+  const dom = $(`<li class="weekendCountdown">
          距离周五放假：
          <span class="time day"></span>天
          <span class="time hour"></span>小时
          <span class="time min"></span>分
+         </li>
+        <li class="countdownToWork">
+        距离17:30下班：
+         <span class="time hour"></span>小时
+         <span class="time min"></span>分
+         <span class="time seconds"></span>秒
+         </li>
+        <li class="countdownToWork2">
+        距离18:00下班：
+         <span class="time hour"></span>小时
+         <span class="time min"></span>分
+         <span class="time seconds"></span>秒
          </li>
        `)
   $('#my_ul').append(dom)
@@ -48,16 +53,17 @@ function setTitle () {
 }
 
 /** 根据当前时间计算 下班倒计时 */
-function calculateTimeUntilClosing (start = 9, end = 17) {
+function calculateTimeUntilClosing (endh = 18, endm = 0, start = 9) {
   // 获取当前时间
   let currentTime = new Date();
   // 设置上班时间为早上9点
   let openingTime = new Date();
+  // 开始时间都是9点整
   openingTime.setHours(start, 0, 0);
-  // 设置下班时间为晚上5点50分
+  // 设置下班时间为晚上5点30分、6点两个时间段
   let closingTime = new Date();
-  closingTime.setHours(end, 50, 0);
-
+  closingTime.setHours(endh, endm, 0);
+  console.log('时间---', closingTime)
   const anHour = 1000 * 60 * 60; // 1小时
 
   // 如果当前时间早于上班时间，则返回距离上班时间还有多少小时和分钟
@@ -67,12 +73,11 @@ function calculateTimeUntilClosing (start = 9, end = 17) {
   //  let minutes = Math.floor((timeRemaining % anHour) / (1000 * 60)); // 看当前时间是多少分钟
   //  return `距离上班还有${hours}小时${minutes}分钟`;
   // }
-
-  // 默认没下班
-  let state = false
-  // 如果当前时间晚于下班时间，已经下班
-  if (currentTime >= closingTime) {
-    state = true
+  if (currentTime >= closingTime && closingTime.toString().includes('17:30')) {
+    $('.countdownToWork').text('5.30下班时间，可以下班啦！记得打卡！')
+  }
+  if (currentTime >= closingTime && closingTime.toString().includes('18:00')) {
+    $('.countdownToWork2').text('18点下班时间，可以下班啦！记得打卡！')
   }
 
   // 如果当前时间在上班时间和下班时间之间，则返回距离下班时间还有多少小时和分钟
@@ -80,21 +85,25 @@ function calculateTimeUntilClosing (start = 9, end = 17) {
   let hours = Math.floor(timeRemaining / anHour); // 剩余小时
   let minutes = Math.floor((timeRemaining % anHour) / (1000 * 60)); // 剩余分钟
   let seconds = Math.floor((timeRemaining % anHour) % (1000 * 60) / 1000); // 剩余秒
-  return { state, hours, minutes, seconds }
+  return { hours, minutes, seconds }
 }
 
 
 
 /** 下班时间倒计时 */
-function countdownToWorkFun () {
-  const { state, hours, minutes, seconds } = calculateTimeUntilClosing()
-  if (state) {
-    $('.countdownToWork').text('兄弟，下班时间到了！下班记得打卡！')
-    return
+function countdownToWorkFun (five30) {
+  const { hours, minutes, seconds } = five30 ? calculateTimeUntilClosing(17, 30) : calculateTimeUntilClosing()
+  // 5.30
+  if (five30) {
+    $('.countdownToWork .hour').text(hours);
+    $('.countdownToWork .min').text(minutes);
+    $('.countdownToWork .seconds').text(seconds);
+  } else {
+    // 6点下班
+    $('.countdownToWork2 .hour').text(hours);
+    $('.countdownToWork2 .min').text(minutes);
+    $('.countdownToWork2 .seconds').text(seconds);
   }
-  $('.countdownToWork .hour').text(hours);
-  $('.countdownToWork .min').text(minutes);
-  $('.countdownToWork .seconds').text(seconds);
 }
 
 
