@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-05-29 15:32:23
- * @LastEditTime: 2024-07-10 14:32:54
+ * @LastEditTime: 2024-07-11 09:33:02
  * @Description: 下班倒计时、放假倒计时
  * @FilePath: \yike-design-devd:\web_si\my_webDemo\my-projectFrame\my-browser-plugins\js\countdown.js
  */
@@ -63,7 +63,7 @@ function calculateTimeUntilClosing (endh = 18, endm = 0, start = 9) {
   // 设置下班时间为晚上5点30分、6点两个时间段
   let closingTime = new Date();
   closingTime.setHours(endh, endm, 0);
-  console.log('时间---', closingTime)
+  // console.log('时间---', closingTime)
   const anHour = 1000 * 60 * 60; // 1小时
 
   // 如果当前时间早于上班时间，则返回距离上班时间还有多少小时和分钟
@@ -88,24 +88,14 @@ function calculateTimeUntilClosing (endh = 18, endm = 0, start = 9) {
   return { hours, minutes, seconds }
 }
 
-
-
 /** 下班时间倒计时 */
 function countdownToWorkFun (five30) {
   const { hours, minutes, seconds } = five30 ? calculateTimeUntilClosing(17, 30) : calculateTimeUntilClosing()
-  // 5.30
-  if (five30) {
-    $('.countdownToWork .hour').text(hours);
-    $('.countdownToWork .min').text(minutes);
-    $('.countdownToWork .seconds').text(seconds);
-  } else {
-    // 6点下班
-    $('.countdownToWork2 .hour').text(hours);
-    $('.countdownToWork2 .min').text(minutes);
-    $('.countdownToWork2 .seconds').text(seconds);
-  }
+  const targetClass = five30 ? '.countdownToWork' : '.countdownToWork2';
+  $(`${targetClass} .hour`).text(hours);
+  $(`${targetClass} .min`).text(minutes);
+  $(`${targetClass} .seconds`).text(seconds);
 }
-
 
 /** 周五放假倒计时 */
 function weekendCountdownFun (weekTime) {
@@ -125,16 +115,12 @@ function weekendCountdownFun (weekTime) {
   const shengyuH = parseInt(zhuanHS / (60 * 60) % 24);
   //计算小时的余数为分钟
   const shengyuM = parseInt(zhuanHS / (60) % 60);
-  //计算分钟的余数秒
+  //计算分钟的剩余秒
   // let shengyuS = parseInt(zhuanHS % 60)
   $('.weekendCountdown .day').text(shengyuD)
   $('.weekendCountdown .hour').text(shengyuH)
   $('.weekendCountdown .min').text(shengyuM)
 }
-
-
-
-
 /** 格言 */
 function mottoFun () {
   const mottoList = [
@@ -152,10 +138,6 @@ function mottoFun () {
   const txt = mottoList[Math.floor(Math.random() * 10)]
   $('#my_motto').text(txt)
 }
-
-
-
-
 /** 边界情况处理 */
 function initBoundary () {
   if (['日', '六'].includes(week)) {
