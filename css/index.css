@@ -5,10 +5,11 @@
   position: fixed;
   right: 15px;
   bottom: 30px;
+  z-index: 9999;
 }
 
 #my_box {
-  width: 280px;
+  width: 300px;
 }
 
 #my_icon {
@@ -16,22 +17,22 @@
   height: 30px;
   background-size: cover;
   position: relative;
-  z-index: 99;
+  z-index: 9999;
 }
 
-li{
+li {
   list-style: none;
 }
 .my_dom_highlight {
   background-color: rgba(0, 0, 0, 0.55) !important;
   box-shadow: 0 7px 6px rgba(0, 0, 0, 0.2), 2px 4px 6px rgba(0, 0, 0, 0.5) !important;
   border: 5px double red;
-  z-index: 99999;
+  z-index: 9999;
 }
-.show{
+.show {
   display: block;
 }
-.hide{
+.hide {
   display: none;
 }
 #my_title {
@@ -62,7 +63,44 @@ li{
 .text-center {
   text-align: center;
 }
-.flex-row{
+.flex-row {
   display: flex;
   justify-items: flex-start;
+}
+
+/* http列表 */
+#httpBody {
+  width: 98%;
+  background-color: #b2efbcfa;
+  border: 3px double red;
+  position: absolute;
+  left: 5px;
+  top: 14%;
+  z-index: 99999;
+}
+
+#httpHead tr td {
+  color: red;
+}
+#httpBody table {
+  table-layout: fixed;
+}
+#httpBody th,
+td {
+  border: 1px solid;
+  padding: 3px;
+  text-align: left;
+}
+#httpBody .h_title {
+  text-align: center;
+}
+#httpBody .h_btn {
+  position: absolute;
+  right: 1%;
+  top: 0;
+  cursor: pointer;
+}
+
+#httpBody .h_table {
+  overflow: auto;
 }

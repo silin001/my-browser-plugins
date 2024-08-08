@@ -8,11 +8,13 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*", "file://*"],
+      "matches": ["<all_urls>"],
       "js": [
         "./js/jquery.js",
         "./js/units.js",
         "./js/countdown.js",
+        "./js/getHttp.js",
+        "./js/injected.js",
         "./js/index.js"
       ],
       "css": ["./css/index.css"]
@@ -32,13 +34,13 @@
     "storage"
   ],
   "web_accessible_resources": [
-        {
-      "resources": [
-        "images/*"
-      ],
-      "matches": [
-        "*://*/*"
-      ]
+    {
+      "resources": ["images/*"],
+      "matches": ["*://*/*"]
+    },
+    {
+      "resources": ["./js/*", "js/injected.js"],
+      "matches": ["*://*/*"]
     }
   ],
   "homepage_url": "https://silin001.gitlab.io"

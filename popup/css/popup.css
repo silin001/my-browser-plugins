@@ -1,0 +1,26 @@
+.popupBox {
+  width: 160px;
+  padding: 0 5px;
+  text-align: center;
+}
+.pop_title {
+  /* height: 20px; */
+}
+.popup_con {
+  padding: 10px;
+}
+
+#httpBtn {
+  padding: 5px 10px;
+  color: #409eff;
+  border: 0;
+  background: #ecf5ff;
+  border-color: #b3d8ff;
+  border-radius: 20px;
+}
+
+#httpBtn:hover {
+  color: #fff;
+  background-color: #409eff;
+  border-color: #409eff;
+}

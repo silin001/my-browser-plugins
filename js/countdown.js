@@ -1,8 +1,8 @@
 /*
  * @Date: 2024-05-29 15:32:23
- * @LastEditTime: 2024-07-11 09:33:02
+ * @LastEditTime: 2024-08-07 17:07:52
  * @Description: 下班倒计时、放假倒计时
- * @FilePath: \yike-design-devd:\web_si\my_webDemo\my-projectFrame\my-browser-plugins\js\countdown.js
+ * @FilePath: /my-browser-plugins/js/countdown.js
  */
 
 const week = "日一二三四五六".charAt(new Date().getDay());
@@ -145,11 +145,6 @@ function initBoundary () {
     $('#my_ul').text('已经是周末啦，要好好休息啊！')
     return
   }
-  // if (['日', '六'].includes(week)) {
-  //   // 清空时间dom内容
-  //   $('#my_ul').text('已经是周末啦，要好好休息啊！')
-  //   return
-  // }
 }
 
 
