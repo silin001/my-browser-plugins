@@ -24,14 +24,43 @@ initPanel()
 
 
 
+
+
+/* 插入http拦截脚本(后续请求拦截) */
+function injectedHttpScript () {
+  const interceptXhr = chrome.runtime.getURL('./js/interceptXhr.js');
+  const jquery = chrome.runtime.getURL('./js/jquery.js');
+  const httpIntercept = chrome.runtime.getURL('./js/httpIntercept.js');
+  // 加载 jQuery
+  loadScript(jquery, function () {
+    console.log("jQuery loaded!");
+    // 加载依赖于 jQuery 的被加载 JS 文件
+    loadScript(httpIntercept)
+    loadScript(interceptXhr, function () {
+      console.log("interceptXhr loaded!");
+    });
+  });
+}
+
+
+// // 监听background消息
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//   if (request.action === "changeBackgroundColor") {
+//     document.body.style.backgroundColor = request.color;
+//     // sendResponse({ status: "success" });
+//   }
+// });
+
+
+
 // ======================================================兜底操作
 window.addEventListener("load", () => {
   console.log('----> edge plugin load')
-  //  初始化获取xhr类型请求
-  const list = getXhrRequest()
-  onMessagePopupScript(list)
   // 插入初始化后续拦截http请求脚本
-  // appendHttpScript()
+  injectedHttpScript()
+  // 初始化执行 页面监听
+  chromeOnMessage()
+
 
 })
 

@@ -13,8 +13,7 @@
         "./js/jquery.js",
         "./js/units.js",
         "./js/countdown.js",
-        "./js/getHttp.js",
-        "./js/injected.js",
+        "./js/httpIntercept.js",
         "./js/index.js"
       ],
       "css": ["./css/index.css"]
@@ -39,7 +38,12 @@
       "matches": ["*://*/*"]
     },
     {
-      "resources": ["./js/*", "js/injected.js"],
+      "resources": [
+        "./js/*",
+        "js/interceptXhr.js",
+        "js/jquery.js",
+        "js/httpIntercept.js"
+      ],
       "matches": ["*://*/*"]
     }
   ],

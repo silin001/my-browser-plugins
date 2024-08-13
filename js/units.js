@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-05-16 14:30:45
- * @LastEditTime: 2024-08-07 16:26:36
+ * @LastEditTime: 2024-08-13 15:52:13
  * @Description:
  * @FilePath: /my-browser-plugins/js/units.js
  */
@@ -60,3 +60,21 @@ function getQueryParams (url) {
   };
 }
 
+
+function getDate () {
+  const dateArray = Date().split(' ')
+  const monthString = dateArray[1]
+  // 将月份转换为数字
+  const monthNumber = new Date(Date.parse(monthString + ' 1')).getMonth() + 1; // 加 1 因为 getMonth() 返回 0-11
+  return `${dateArray[3]}-${monthNumber}-${dateArray[2]}|${dateArray[4]}`
+}
+
+
+
+/* 插入 js*/
+function loadScript (url, callback) {
+  const script = document.createElement('script');
+  script.src = url;
+  script.onload = callback;
+  document.head.appendChild(script);
+}

@@ -70,7 +70,8 @@ li {
 
 /* http列表 */
 #httpBody {
-  width: 98%;
+  display: none;
+  width: 99%;
   background-color: #b2efbcfa;
   border: 3px double red;
   position: absolute;
@@ -79,14 +80,23 @@ li {
   z-index: 99999;
 }
 
-#httpHead tr td {
-  color: red;
+#httpHead #apiTable .t2 {
+  width: 180px;
+}
+#httpHead #apiTable .t3 {
+  width: 100px;
+}
+#httpHead #apiTable .t4 {
+  width: 180px;
+}
+#httpHead #apiTable .t5 {
+  width: 180px;
 }
 #httpBody table {
   table-layout: fixed;
 }
-#httpBody th,
-td {
+#httpBody #apiTable th,
+#httpBody #apiTable td {
   border: 1px solid;
   padding: 3px;
   text-align: left;

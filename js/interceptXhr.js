@@ -1,0 +1,174 @@
+/*
+ * @Date: 2024-08-06 17:27:04
+ * @LastEditTime: 2024-08-13 16:56:06
+ * @Description: 对原生的XMLHttpRequest及fetch对象做扩展来实现对请求和响应的捕获
+ * @FilePath: /my-browser-plugins/js/interceptXhr.js
+ */
+
+
+// 确保在 jQuery 加载完成后，jQuery 可用
+$(document).ready(function () {
+  console.log(6666, "jQuery is ready in yourScript.js!");
+  // console.log($)
+});
+
+
+let alllHttpList = []
+
+/* 监听popup发来的数据 */
+// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+//   console.log('监听popup发来的数据:', request)
+// });
+
+// 初始化执行
+httpProxy(XMLHttpRequest)
+/*  拦截XMLHttpRequest   */
+function httpProxy (xhr) {
+  // console.log('2、拦截请求脚本已加载')
+  const XHR = xhr.prototype || XMLHttpRequest.prototype;
+  const open = XHR.open;
+  const send = XHR.send;
+  const setRequestHeader = XHR.setRequestHeader;
+
+  XHR.open = function (method, url) {
+    this._method = method;
+    this._url = url;
+    this._requestHeaders = {};
+    return open.apply(this, arguments);
+  };
+
+  XHR.setRequestHeader = function (header, value) {
+    this._requestHeaders[header] = value;
+    return setRequestHeader.apply(this, arguments);
+  };
+
+  XHR.send = function (postData) {
+    this.addEventListener('load', function () {
+      console.log('XHR.send---this---', this)
+      const { responseType, _url, _method, _requestHeaders, responseURL, response, status, } = this
+      if (_url) {
+        if (responseType !== 'blob') {
+          const { urlObj, urlParams } = getQueryParams(responseURL)
+          const httpData = {
+            date: getDate(),
+            ...urlObj,
+            params: postData ? JSON.parse(postData) : urlParams,
+            method: _method,
+            status: status,
+            response: JSON.parse(response),
+            requestHeaders: _requestHeaders,
+          }
+          console.log('拦截到的参数', httpData)
+          try {
+            // 添加请求数据到全局list
+            addList(httpData)
+            const res = getXhrRequest(alllHttpList)
+            console.log('拦截过滤后的http结果----', res);
+            createListDom(res)
+            sessionStorage.setItem('httpList', JSON.stringify(res));
+
+            // console.log(list)
+          } catch (err) {
+            console.log("拦截错误：Error in responseType try catch");
+            console.log(err);
+          }
+        }
+
+      }
+    });
+    return send.apply(this, arguments);
+  };
+};
+
+
+// 在其他标签页或窗口中更新 sessionStorage
+function updateSessionStorage (key, value) {
+  // sessionStorage.setItem(key, value);
+  // 使用 localStorage 通知其他窗口
+  localStorage.setItem(key, value); // 触发 storage 事件
+}
+
+/* 初始化http 拦截 */
+function getXhrRequest (httpList) {
+  const xhrList = getDevInterface(httpList, '/api')
+  return xhrList
+}
+
+
+/* 根据apiPrefix过滤制定http请求 */
+function getDevInterface (list, apiPrefix) {
+  return list.filter((item, index) => item.href.includes(apiPrefix)).map((i) => {
+    return {
+      ...i,
+      ...getQueryParams(i.href),
+    }
+  })
+}
+
+function getDate () {
+  const dateArray = Date().split(' ')
+  const monthString = dateArray[1]
+  // 将月份转换为数字
+  const monthNumber = new Date(Date.parse(monthString + ' 1')).getMonth() + 1; // 加 1 因为 getMonth() 返回 0-11
+  return `${dateArray[3]}-${monthNumber}-${dateArray[2]}-[${dateArray[4]}]`
+}
+
+
+/* 添加数据 */
+function addList (obj) {
+  if (alllHttpList.length > 4) {
+    alllHttpList = []
+  }
+  if (!alllHttpList.length) {
+    alllHttpList.push(obj)
+  } else {
+    alllHttpList.forEach((i) => {
+      if (i.date !== obj.date) {
+        alllHttpList.push(obj)
+      }
+    })
+  }
+}
+function getQueryParams (url) {
+  // 使用 URL 对象解析 URL 字符串
+  const parsedUrl = new URL(url);
+  const { search, href, pathname, origin } = parsedUrl
+  // 初始化返回的参数对象
+  let urlParams = {}
+  // 获取查询参数
+  const urlSearchParams = new URLSearchParams(search);
+  // 遍历查询参数并填充到对象中
+  urlSearchParams.forEach((value, key) => {
+    urlParams[key] = value;
+  });
+
+  return {
+    urlParams,
+    urlObj: {
+      origin,
+      api: pathname,
+      href
+    }
+  };
+}
+
+
+
+
+// 拦截fetch
+// const originalFetch = window.fetch;
+// window.fetch = function (url, options) {
+//   const fch = originalFetch(url, options);
+
+//   console.log('url: ', url);
+//   console.log('options: ', options);
+
+//   fch.then(function (data) {
+//     if (data.ok && data.status == 200) {
+//       return data.clone().json();
+//     }
+//   }).then(function (a) {
+//     console.log('response', a);
+//   });
+//   return fch;
+// }

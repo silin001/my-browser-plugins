@@ -36,18 +36,18 @@ function sendMessageToContentScript (message, callback) {
     });
   });
 }
-// 显示http请求
+// 显示注入脚本拦截到的http请求
 $("#httpBtn").click(function () {
   const obj = {
-    type: '显示http',
-    title: '我是我是popup',
-    showHttpList: true
+    form: 'popup',
+    title: '我是我是popup！',
+    actions: 'test'
   }
   // 参数1 发生数据，参数2 回掉函数获取返回的数据
   sendMessageToContentScript(obj, function (response) {
-    console.log('来自content-script 的回复：' + response);
-    // const list = JSON.parse(response)
-    // console.log(list)
+    console.log('来自content-script（index.js）的回复：' + response);
+    if (response) {
+      alert(response.msg)
+    }
   });
 });
-

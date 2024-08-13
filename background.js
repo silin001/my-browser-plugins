@@ -16,11 +16,11 @@ const menuList = [
     url: 'https://ditu.gaode.com',
     id: 'my2'
   },
-  // {
-  //   title: '查看所有http请求',
-  //   url: '',
-  //   id: 'my3'
-  // },
+  {
+    title: '显示拦截的http请求',
+    url: '',
+    id: 'my3'
+  },
 ]
 
 
@@ -36,7 +36,17 @@ function createExtendMenu () {
 
     // 右键菜单事件绑定
     chrome.contextMenus.onClicked.addListener(function (info, tab) {
-      if (info.menuItemId === id) {
+      if (info.menuItemId === id && id == 'my3') {
+        console.log(id)
+        console.log(tab)
+        const obj = {
+          form: 'background',
+          title: '我是我是background！',
+          action: 'showHttpList'
+        }
+        // 因为当前文件和主页面文件不在同一上下文环境，所以在这里：发送消息、在content_scripts文件中监听
+        chrome.tabs.sendMessage(tab.id, obj);
+      } else if (info.menuItemId === id) {
         chrome.tabs.create({ url });
       }
 
@@ -75,13 +85,4 @@ createExtendMenu()
 // };
 
 
-
-// // 获取当前 tab ID
-// function getCurrentTabId () {
-//   return new Promise((resolve, reject) => {
-//     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-//       resolve(tabs.length ? tabs[0].id : null)
-//     });
-//   })
-// };
 
