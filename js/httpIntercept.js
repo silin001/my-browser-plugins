@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-06 16:08:26
- * @LastEditTime: 2024-08-14 16:16:10
+ * @LastEditTime: 2024-08-14 17:09:50
  * @Description:  拦截http请求相关
  * @FilePath: /my-browser-plugins/js/httpIntercept.js
  */
@@ -32,7 +32,7 @@ function injectedHttpScript () {
   const httpIntercept = chrome.runtime.getURL('./js/httpIntercept.js');
   // 加载 jQuery
   loadScript(jquery, function () {
-    console.log("jQuery loaded!");
+    // console.log("jQuery loaded!");
     // 加载依赖于 jQuery 的被加载 JS 文件
     loadScript(httpIntercept)
     loadScript(interceptXhr, function () {
@@ -132,7 +132,7 @@ function chromeOnMessage () {
         if ($("#httpBody").length) {
           $("#httpBody").show(500)
         } else {
-          alert('暂无捕获数据！')
+          alert('暂无拦截http请求数据！')
         }
       }
 

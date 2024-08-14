@@ -32,7 +32,7 @@ function createExtendMenu () {
     // 创建右键菜单
     chrome.contextMenus.create({
       title,
-      id
+      id,
     });
 
     // 右键菜单事件绑定
