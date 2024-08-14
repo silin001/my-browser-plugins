@@ -1,15 +1,14 @@
 #my_body {
-  /* user-select: none; */
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   position: fixed;
-  right: 15px;
+  left: 10px;
   bottom: 30px;
   z-index: 9999;
 }
 
 #my_box {
-  width: 300px;
+  width: 290px;
 }
 
 #my_icon {
@@ -38,19 +37,20 @@ li {
 #my_title {
   font-style: oblique;
   font-size: 15px;
-  color: #fff;
+  color: #04ef72;
 }
 #my_motto {
   color: #fff;
   background-color: #00cfbe;
   font-weight: 500;
   padding: 3px 0;
+  font-size: 15px;
 }
 #my_ul {
   font-size: 14px;
 }
 #my_ul li {
-  padding: 4px 2px;
+  padding: 2px;
   color: #fff;
 }
 #my_ul .time {
@@ -80,22 +80,23 @@ li {
   z-index: 99999;
 }
 
-#httpHead #apiTable .t2 {
+#apiTable .t2 {
   width: 180px;
 }
-#httpHead #apiTable .t3 {
+#apiTable .t3 {
   width: 100px;
 }
-#httpHead #apiTable .t4 {
+#apiTable .t4 {
   width: 180px;
 }
-#httpHead #apiTable .t5 {
-  width: 180px;
-}
+
 #httpBody table {
   table-layout: fixed;
 }
-#httpBody #apiTable th,
+#httpBody #apiTable th {
+  border: 1px solid;
+  color: #0f34ef;
+}
 #httpBody #apiTable td {
   border: 1px solid;
   padding: 3px;
@@ -107,7 +108,8 @@ li {
 #httpBody .h_btn {
   position: absolute;
   right: 1%;
-  top: 0;
+  font-size: 25px;
+  top: -5px;
   cursor: pointer;
 }
 

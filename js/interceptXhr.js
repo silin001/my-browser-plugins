@@ -1,24 +1,18 @@
 /*
  * @Date: 2024-08-06 17:27:04
- * @LastEditTime: 2024-08-13 16:56:06
+ * @LastEditTime: 2024-08-14 16:52:28
  * @Description: 对原生的XMLHttpRequest及fetch对象做扩展来实现对请求和响应的捕获
  * @FilePath: /my-browser-plugins/js/interceptXhr.js
  */
 
 
 // 确保在 jQuery 加载完成后，jQuery 可用
-$(document).ready(function () {
-  console.log(6666, "jQuery is ready in yourScript.js!");
-  // console.log($)
-});
+// $(document).ready(function () {
+//   console.log(6666, "jQuery is ready in yourScript.js!");
+// });
 
 
 let alllHttpList = []
-
-/* 监听popup发来的数据 */
-// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-//   console.log('监听popup发来的数据:', request)
-// });
 
 // 初始化执行
 httpProxy(XMLHttpRequest)
@@ -44,7 +38,7 @@ function httpProxy (xhr) {
 
   XHR.send = function (postData) {
     this.addEventListener('load', function () {
-      console.log('XHR.send---this---', this)
+      // console.log('XHR.send---this---', this)
       const { responseType, _url, _method, _requestHeaders, responseURL, response, status, } = this
       if (_url) {
         if (responseType !== 'blob') {
@@ -58,19 +52,18 @@ function httpProxy (xhr) {
             response: JSON.parse(response),
             requestHeaders: _requestHeaders,
           }
-          console.log('拦截到的参数', httpData)
+          // console.log('拦截到的参数', httpData)
           try {
             // 添加请求数据到全局list
             addList(httpData)
             const res = getXhrRequest(alllHttpList)
-            console.log('拦截过滤后的http结果----', res);
-            createListDom(res)
-            sessionStorage.setItem('httpList', JSON.stringify(res));
-
-            // console.log(list)
+            console.log('拦截过滤后http结果--->', res);
+            // console.table(res);
+            // 插入新的dom数据
+            appendTableDom(res)
+            // sessionStorage.setItem('httpList', JSON.stringify(res));
           } catch (err) {
-            console.log("拦截错误：Error in responseType try catch");
-            console.log(err);
+            console.log("拦截错误：Error in responseType try catch", err);
           }
         }
 
@@ -81,11 +74,19 @@ function httpProxy (xhr) {
 };
 
 
-// 在其他标签页或窗口中更新 sessionStorage
-function updateSessionStorage (key, value) {
-  // sessionStorage.setItem(key, value);
-  // 使用 localStorage 通知其他窗口
-  localStorage.setItem(key, value); // 触发 storage 事件
+
+/* 添加数据 */
+function addList (obj) {
+  // 当 alllHttpList 的长度大于 4 时，清空数组
+  if (alllHttpList.length > 5) {
+    alllHttpList.length = 0; // 清空数组
+  }
+  // 检查新对象的日期是否已经存在于 alllHttpList 中
+  const exists = alllHttpList.some(i => i.date === obj.date);
+  // 如果日期不存在，则将新对象添加到数组中
+  if (!exists) {
+    alllHttpList.push(obj);
+  }
 }
 
 /* 初始化http 拦截 */
@@ -110,25 +111,10 @@ function getDate () {
   const monthString = dateArray[1]
   // 将月份转换为数字
   const monthNumber = new Date(Date.parse(monthString + ' 1')).getMonth() + 1; // 加 1 因为 getMonth() 返回 0-11
-  return `${dateArray[3]}-${monthNumber}-${dateArray[2]}-[${dateArray[4]}]`
+  return `${monthNumber}-${dateArray[2]}-[${dateArray[4]}]`
 }
 
 
-/* 添加数据 */
-function addList (obj) {
-  if (alllHttpList.length > 4) {
-    alllHttpList = []
-  }
-  if (!alllHttpList.length) {
-    alllHttpList.push(obj)
-  } else {
-    alllHttpList.forEach((i) => {
-      if (i.date !== obj.date) {
-        alllHttpList.push(obj)
-      }
-    })
-  }
-}
 function getQueryParams (url) {
   // 使用 URL 对象解析 URL 字符串
   const parsedUrl = new URL(url);
@@ -154,7 +140,7 @@ function getQueryParams (url) {
 
 
 
-
+// TODO
 // 拦截fetch
 // const originalFetch = window.fetch;
 // window.fetch = function (url, options) {

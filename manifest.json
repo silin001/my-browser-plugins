@@ -4,7 +4,21 @@
   "manifest_version": 3,
   "description": "5.30、6点下班、周五放假时间倒计时；上班摸鱼名言、右键菜单常用链接跳转（持续完善中）",
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "./background/background.js"
+  },
+  "commands": {
+    "show_httplist": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+O"
+      },
+      "description": "打开拦截http请求列表"
+    },
+    "hide_httplist": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+P"
+      },
+      "description": "关闭拦截http请求列表"
+    }
   },
   "content_scripts": [
     {

@@ -1,13 +1,15 @@
 .popupBox {
   width: 160px;
-  padding: 0 5px;
   text-align: center;
 }
 .pop_title {
-  /* height: 20px; */
+  color: #0970d7;
 }
 .popup_con {
-  padding: 10px;
+}
+
+.tip {
+  color: red;
 }
 
 #httpBtn {

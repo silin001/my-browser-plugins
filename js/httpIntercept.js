@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-06 16:08:26
- * @LastEditTime: 2024-08-13 17:30:45
+ * @LastEditTime: 2024-08-14 16:16:10
  * @Description:  拦截http请求相关
  * @FilePath: /my-browser-plugins/js/httpIntercept.js
  */
@@ -24,14 +24,38 @@
 //   const xhrList = getDevInterface(httpList, '/api')
 //   return xhrList
 // }
+
+/* 插入http拦截脚本(后续请求拦截) */
+function injectedHttpScript () {
+  const interceptXhr = chrome.runtime.getURL('./js/interceptXhr.js');
+  const jquery = chrome.runtime.getURL('./js/jquery.js');
+  const httpIntercept = chrome.runtime.getURL('./js/httpIntercept.js');
+  // 加载 jQuery
+  loadScript(jquery, function () {
+    console.log("jQuery loaded!");
+    // 加载依赖于 jQuery 的被加载 JS 文件
+    loadScript(httpIntercept)
+    loadScript(interceptXhr, function () {
+      console.log("interceptXhr loaded!");
+    });
+  });
+}
 // ------------------------------------------
 
+
+/* 插入dom表格 */
+function appendTableDom (list) {
+  if ($("#httpBody").length) {
+    $("#httpBody").remove()
+  }
+  createXhrTable(list, 'body')
+}
 /* 创建捕获到的http表格dom */
 function createXhrTable (list, domTag) {
   var html = `
           <div id="httpBody">
            <div class="h_title">
-            <div>拦截到‘api’前缀的相关接口(${list.length})</div>
+            <div>拦截到【 api 】前缀相关接口——(${list.length}条)</div>
              <span class="h_btn">x</span>
              </div>
            <div class="h_table">
@@ -49,11 +73,11 @@ function createXhrTable (list, domTag) {
                     ${list.map(i => `
                         <tr>
                             <td>${i.api}</td>
-                            <td>
-                                ${Object.entries(i.params).map(([key, value]) => `${key}: ${value}`).join(' ')}
+                            <td class="t2">
+                                ${Object.entries(i.params).map(([key, value]) => `${key}: ${value}`).join('<br>')}
                             </td>
-                            <td>${i.method}</td>
-                            <td>${i.date}</td>
+                            <td class="t3">${i.method}</td>
+                            <td class="t4">${i.date}</td>
                             <td>${i.href}</td>
                         </tr>
                     `).join('')}
@@ -71,53 +95,53 @@ function createXhrTable (list, domTag) {
 
 
 // 根据内容设置td宽度
-function adjustColumnWidths () {
-  const table = document.getElementById('apiTable');
-  const rows = table.rows;
-  const columnCount = rows[0].cells.length; // 获取列数
+// function adjustColumnWidths () {
+//   const table = document.getElementById('apiTable');
+//   const rows = table.rows;
+//   const columnCount = rows[0].cells.length; // 获取列数
 
-  for (let i = 0; i < columnCount; i++) {
-    let maxWidth = 0; // 每列的最大宽度
-    for (let j = 0; j < rows.length; j++) {
-      const cell = rows[j].cells[i];
-      const cellWidth = cell.offsetWidth; // 获取单元格的宽度
-      maxWidth = Math.max(maxWidth, cellWidth); // 更新最大宽度
-    }
-    // 设置列宽
-    for (let j = 0; j < rows.length; j++) {
-      rows[j].cells[i].style.width = maxWidth + 'px'; // 根据最大宽度设置宽度
-    }
-  }
-}
+//   for (let i = 0; i < columnCount; i++) {
+//     let maxWidth = 0; // 每列的最大宽度
+//     for (let j = 0; j < rows.length; j++) {
+//       const cell = rows[j].cells[i];
+//       const cellWidth = cell.offsetWidth; // 获取单元格的宽度
+//       maxWidth = Math.max(maxWidth, cellWidth); // 更新最大宽度
+//     }
+//     // 设置列宽
+//     for (let j = 0; j < rows.length; j++) {
+//       rows[j].cells[i].style.width = maxWidth + 'px'; // 根据最大宽度设置宽度
+//     }
+//   }
+// }
 
 
-/* 插入dom表格 */
-function appendTableDom (list) {
-  if ($("#httpBody").length) {
-    $("#httpBody").remove()
-  }
-  createXhrTable(list, 'body')
-}
 
 /*  监听其他页面发来的 chrome.tabs.sendMessage 消息 */
 function chromeOnMessage () {
   // chrome.runtime.onMessage 不可以在 注入js文件中使用。
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     const { form, title, action } = request
-    console.log(`监听来自chrome扩展--》${title}发送的消息：`, request)
+    // console.log(`监听来自chrome扩展--》${title}发送的消息：`, request)
     // background.js
     if (form === 'background') {
-      if (action === 'showHttpList') {
-        // 显示 httplist
-        $("#httpBody").show(500)
+      if (action === 'hide_httplist') {
+        $('#httpBody').hide(400)
+        return
       }
+      if (action === 'show_httplist') {
+        if ($("#httpBody").length) {
+          $("#httpBody").show(500)
+        } else {
+          alert('暂无捕获数据！')
+        }
+      }
+
     }
     // popup.js脚本
     if (form === 'popup') {
-      const liststr = sessionStorage.getItem('httpList');
-      const list = liststr ? JSON.parse(liststr) : []
-      console.log('获取注入脚本拦截的api请求---', list)
-      appendTableDom(list)
+      // const liststr = sessionStorage.getItem('httpList');
+      // const list = liststr ? JSON.parse(liststr) : []
+      // console.log('获取注入脚本拦截的api请求---', list)
       sendResponse({ msg: 'popup, 发送的消息！' })
     }
   });

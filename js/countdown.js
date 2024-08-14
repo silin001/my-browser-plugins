@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-05-29 15:32:23
- * @LastEditTime: 2024-08-07 17:07:52
+ * @LastEditTime: 2024-08-14 16:46:32
  * @Description: 下班倒计时、放假倒计时
  * @FilePath: /my-browser-plugins/js/countdown.js
  */
@@ -129,13 +129,11 @@ function mottoFun () {
     '人生不过三万天，打工一天又一天',
     '枯藤老树昏鸦，上班摸鱼下班回家',
     '人生得意须尽欢，周末双休不加班',
-    '月薪两千五，命比咖啡苦',
-    '上班的我风都吹的倒，下班的我狗都追不到',
     '虚情假意上班，真心实意下班',
     '上辈子作恶多端，这辈子早起上班',
     '磨刀不误砍柴工，玩会手机再开工',
   ]
-  const txt = mottoList[Math.floor(Math.random() * 10)]
+  const txt = mottoList[Math.floor(Math.random() * 8)]
   $('#my_motto').text(txt)
 }
 /** 边界情况处理 */
