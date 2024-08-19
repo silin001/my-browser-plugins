@@ -1,6 +1,6 @@
 {
   "name": "摸鱼办",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "manifest_version": 3,
   "description": "下班、周五放假时间倒计时；上班摸鱼名言、右键菜单常用链接跳转（持续完善中）",
   "background": {

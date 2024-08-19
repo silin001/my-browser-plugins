@@ -25,33 +25,41 @@ const menuList = [
 
 // 创建右键按钮
 createExtendMenu()
-// 创建扩展右键菜单
 function createExtendMenu () {
-  menuList.forEach((i, index) => {
-    const { id, title, url } = i
-    // 创建右键菜单
-    chrome.contextMenus.create({
-      title,
-      id,
-    });
+  // 首先清除已有的上下文菜单项
+  chrome.contextMenus.removeAll(function () {
+    menuList.forEach((item) => {
+      const { id, title, url } = item;
 
-    // 右键菜单事件绑定
-    chrome.contextMenus.onClicked.addListener(function (info, tab) {
-      if (info.menuItemId === id && id == 'my3') {
-        console.log(tab)
-        // 打开拦截http请求列表
-        sendMessageToContentScript(tab.id, 'show_httplist')
-      } else if (info.menuItemId === id) {
-        chrome.tabs.create({ url });
-      }
+      // 创建右键菜单
+      chrome.contextMenus.create({
+        title,
+        id,
+      });
 
+      // 右键菜单事件绑定
+      chrome.contextMenus.onClicked.addListener(function (info, tab) {
+        if (info.menuItemId === id && id == 'my3') {
+          console.log(tab);
+          // 打开拦截http请求列表
+          // sendMessageToContentScript(tab.id, 'show_httplist');
+          // 1、因为当前文件和主页面文件不在同一上下文环境，所以在这里：发送消息、在content_scripts文件中监听
+          // 2、由于content_scripts js中初始化监听了 onMessage，这里初始化会创建右键菜单，如果不在这里发送，那边会报错：
+          // Uncaught TypeError: Cannot read properties of undefined(reading 'onMessage')
+          const obj = {
+            form: 'background',
+            title: '我是我是background！',
+            action: 'show_httplist'
+          }
+          // chrome.tabs.sendMessage(tab.id, obj);
+          sendMessageToContentScript(tab.id, 'show_httplist');
+        } else if (info.menuItemId === id) {
+          chrome.tabs.create({ url });
+        }
+      });
     });
-  })
+  });
 }
-
-
-
-
 
 
 // 快捷键事件监听
@@ -88,6 +96,13 @@ function sendMessageToContentScript (tabId, actionstr) {
     action: actionstr
   }
   // 因为当前文件和主页面文件不在同一上下文环境，所以在这里：发送消息、在content_scripts文件中监听
-  chrome.tabs.sendMessage(tabId, obj);
+  chrome.tabs.sendMessage(tabId, obj, function (response) {
+    if (chrome.runtime.lastError) {
+      console.error('Message failed:', chrome.runtime.lastError);
+    } else {
+      console.log('Response:', response);
+    }
+  });
+
 }
 

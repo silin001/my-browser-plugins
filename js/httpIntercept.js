@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-06 16:08:26
- * @LastEditTime: 2024-08-14 17:09:50
+ * @LastEditTime: 2024-08-19 14:53:22
  * @Description:  拦截http请求相关
  * @FilePath: /my-browser-plugins/js/httpIntercept.js
  */
@@ -18,12 +18,20 @@
 // }
 
 
+
+
 /* 初始化http 拦截 */
 // function getXhrRequest () {
 //   const httpList = getRequestListByType('http')
 //   const xhrList = getDevInterface(httpList, '/api')
 //   return xhrList
 // }
+
+
+
+
+
+
 
 /* 插入http拦截脚本(后续请求拦截) */
 function injectedHttpScript () {
@@ -35,9 +43,13 @@ function injectedHttpScript () {
     // console.log("jQuery loaded!");
     // 加载依赖于 jQuery 的被加载 JS 文件
     loadScript(httpIntercept)
-    loadScript(interceptXhr, function () {
-      console.log("interceptXhr loaded!");
+    loadScript(httpIntercept, function () {
+      console.log("httpIntercept loaded!");
+
     });
+    // loadScript(interceptXhr, function () {
+    //   console.log("interceptXhr loaded!");
+    // });
   });
 }
 // ------------------------------------------
@@ -120,6 +132,7 @@ function createXhrTable (list, domTag) {
 function chromeOnMessage () {
   // chrome.runtime.onMessage 不可以在 注入js文件中使用。
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    console.log(111, sender)
     const { form, title, action } = request
     // console.log(`监听来自chrome扩展--》${title}发送的消息：`, request)
     // background.js

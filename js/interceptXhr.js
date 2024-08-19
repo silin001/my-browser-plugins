@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-06 17:27:04
- * @LastEditTime: 2024-08-14 16:52:28
+ * @LastEditTime: 2024-08-19 14:15:50
  * @Description: 对原生的XMLHttpRequest及fetch对象做扩展来实现对请求和响应的捕获
  * @FilePath: /my-browser-plugins/js/interceptXhr.js
  */
@@ -39,34 +39,31 @@ function httpProxy (xhr) {
   XHR.send = function (postData) {
     this.addEventListener('load', function () {
       // console.log('XHR.send---this---', this)
-      const { responseType, _url, _method, _requestHeaders, responseURL, response, status, } = this
-      if (_url) {
-        if (responseType !== 'blob') {
-          const { urlObj, urlParams } = getQueryParams(responseURL)
-          const httpData = {
-            date: getDate(),
-            ...urlObj,
-            params: postData ? JSON.parse(postData) : urlParams,
-            method: _method,
-            status: status,
-            response: JSON.parse(response),
-            requestHeaders: _requestHeaders,
-          }
-          // console.log('拦截到的参数', httpData)
-          try {
-            // 添加请求数据到全局list
-            addList(httpData)
-            const res = getXhrRequest(alllHttpList)
-            console.log('拦截过滤后http结果--->', res);
-            // console.table(res);
-            // 插入新的dom数据
-            appendTableDom(res)
-            // sessionStorage.setItem('httpList', JSON.stringify(res));
-          } catch (err) {
-            console.log("拦截错误：Error in responseType try catch", err);
-          }
+      const { _url, _method, _requestHeaders, responseURL, response, status, } = this
+      if (_url && _url.includes('/api')) {
+        const { urlObj, urlParams } = getQueryParams(responseURL)
+        const httpData = {
+          date: getDate(),
+          ...urlObj,
+          params: postData ? JSON.parse(postData) : urlParams,
+          method: _method,
+          status: status,
+          response: response ? JSON.parse(response) : response,
+          requestHeaders: _requestHeaders,
         }
-
+        // console.log('拦截到的参数', httpData)
+        try {
+          // 添加请求数据到全局list
+          addList(httpData)
+          const res = getXhrRequest(alllHttpList)
+          console.log('拦截过滤后http结果--->', res);
+          // console.table(res);
+          // 插入新的dom数据
+          appendTableDom(res)
+          // sessionStorage.setItem('httpList', JSON.stringify(res));
+        } catch (err) {
+          console.log("拦截错误：Error in responseType try catch", err);
+        }
       }
     });
     return send.apply(this, arguments);
@@ -111,7 +108,7 @@ function getDate () {
   const monthString = dateArray[1]
   // 将月份转换为数字
   const monthNumber = new Date(Date.parse(monthString + ' 1')).getMonth() + 1; // 加 1 因为 getMonth() 返回 0-11
-  return `${monthNumber}-${dateArray[2]}-[${dateArray[4]}]`
+  return `${monthNumber}-${dateArray[2]}【${dateArray[4]}】`
 }
 
 
