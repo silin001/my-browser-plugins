@@ -1,8 +1,8 @@
 /*
  * @Date: 2024-08-06 16:08:26
- * @LastEditTime: 2024-08-20 17:18:46
+ * @LastEditTime: 2024-08-26 15:58:54
  * @Description:  拦截http请求相关
- * @FilePath: /my-browser-plugins/js/httpIntercept.js
+ * @FilePath: /safmr/Users/sisi/Desktop/myWeb/my-plugins-project/my-browser-plugins/js/httpIntercept.js
  */
 
 /* 插入http拦截脚本(后续请求拦截) */
@@ -172,14 +172,8 @@ function chromeOnMessage () {
 
 /* 根据apiPrefix过滤制定http请求 */
 function getDevInterface (list, apiPrefix) {
-  return list.filter((item, index) => item.href.includes(apiPrefix)).map((i) => {
-    return {
-      ...getQueryParams(i.href),
-    }
-  })
+  return list.filter((item, index) => item.href.includes(apiPrefix))
 }
-
-
 
 /** 初始化-获取页面所有请求资源（植入个别接口居多的网站，数据太多容易崩溃） */
 function getAllEntries () {

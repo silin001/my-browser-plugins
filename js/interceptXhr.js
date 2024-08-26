@@ -1,8 +1,8 @@
 /*
  * @Date: 2024-08-06 17:27:04
- * @LastEditTime: 2024-08-21 09:14:27
+ * @LastEditTime: 2024-08-26 16:08:22
  * @Description: 对原生的XMLHttpRequest及fetch对象做扩展来实现对请求和响应的捕获
- * @FilePath: /my-browser-plugins/js/interceptXhr.js
+ * @FilePath: /safmr/Users/sisi/Desktop/myWeb/my-plugins-project/my-browser-plugins/js/interceptXhr.js
  */
 
 
@@ -41,8 +41,7 @@ function httpProxy (xhr) {
       // console.log('XHR.send---this---', this)
       const { _url, _method, _requestHeaders, responseURL, response, status, } = this
       if (_url && _url.includes('/api')) {
-        const { urlObj, urlParams } = getQueryParams(responseURL)
-        // console.log('🚀🚀 ~ urlObj:', urlObj)
+        const { urlObj, urlParams } = getUrlParamsObj(responseURL)
         const httpData = {
           date: getDate(),
           ...urlObj,
@@ -52,7 +51,7 @@ function httpProxy (xhr) {
           response: response ? JSON.parse(response) : response,
           requestHeaders: _requestHeaders,
         }
-        // console.log('拦截到的参数', httpData)
+        console.log('拦截到的参数', httpData)
         try {
           // 添加请求数据到全局list
           addList(httpData)
@@ -78,6 +77,7 @@ function addList (obj) {
   // 当 alllHttpList 的长度大于 4 时，清空数组
   if (alllHttpList.length > 5) {
     alllHttpList.length = 0; // 清空数组
+    alllHttpList = []
   }
   // 检查新对象的日期是否已经存在于 alllHttpList 中
   const exists = alllHttpList.some(i => i.date === obj.date);
@@ -90,18 +90,8 @@ function addList (obj) {
 /* 初始化http 拦截 */
 function getXhrRequest (httpList) {
   const xhrList = getDevInterface(httpList, '/api')
+  // console.log('根据 /api  过滤后的 请求', xhrList)
   return xhrList
-}
-
-
-/* 根据apiPrefix过滤制定http请求 */
-function getDevInterface (list, apiPrefix) {
-  return list.filter((item, index) => item.href.includes(apiPrefix)).map((i) => {
-    return {
-      ...i,
-      ...getQueryParams(i.href),
-    }
-  })
 }
 
 function getDate () {
@@ -113,7 +103,8 @@ function getDate () {
 }
 
 
-function getQueryParams (url) {
+// 获取url参数以及 格式化url
+function getUrlParamsObj (url) {
   // 使用 URL 对象解析 URL 字符串
   const parsedUrl = new URL(url);
   const { search, href, pathname, origin } = parsedUrl
