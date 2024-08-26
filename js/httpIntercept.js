@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-06 16:08:26
- * @LastEditTime: 2024-08-19 14:53:22
+ * @LastEditTime: 2024-08-20 17:18:46
  * @Description:  拦截http请求相关
  * @FilePath: /my-browser-plugins/js/httpIntercept.js
  */
@@ -33,7 +33,7 @@
 
 
 
-/* 插入http拦截脚本(后续请求拦截) */
+/* 插入http拦截脚本(后  续请求拦截) */
 function injectedHttpScript () {
   const interceptXhr = chrome.runtime.getURL('./js/interceptXhr.js');
   const jquery = chrome.runtime.getURL('./js/jquery.js');
@@ -42,14 +42,13 @@ function injectedHttpScript () {
   loadScript(jquery, function () {
     // console.log("jQuery loaded!");
     // 加载依赖于 jQuery 的被加载 JS 文件
-    loadScript(httpIntercept)
+    loadScript(interceptXhr, function () {
+      console.log("interceptXhr loaded!");
+    });
     loadScript(httpIntercept, function () {
       console.log("httpIntercept loaded!");
-
     });
-    // loadScript(interceptXhr, function () {
-    //   console.log("interceptXhr loaded!");
-    // });
+
   });
 }
 // ------------------------------------------
@@ -86,7 +85,7 @@ function createXhrTable (list, domTag) {
                         <tr>
                             <td>${i.api}</td>
                             <td class="t2">
-                                ${Object.entries(i.params).map(([key, value]) => `${key}: ${value}`).join('<br>')}
+                              ${i.params ? Object.entries(i.params).map(([key, value]) => `${key}: ${value}`).join('<br>') : ''}
                             </td>
                             <td class="t3">${i.method}</td>
                             <td class="t4">${i.date}</td>
@@ -132,7 +131,6 @@ function createXhrTable (list, domTag) {
 function chromeOnMessage () {
   // chrome.runtime.onMessage 不可以在 注入js文件中使用。
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    console.log(111, sender)
     const { form, title, action } = request
     // console.log(`监听来自chrome扩展--》${title}发送的消息：`, request)
     // background.js

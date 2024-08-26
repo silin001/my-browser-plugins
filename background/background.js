@@ -46,11 +46,11 @@ function createExtendMenu () {
           // 1、因为当前文件和主页面文件不在同一上下文环境，所以在这里：发送消息、在content_scripts文件中监听
           // 2、由于content_scripts js中初始化监听了 onMessage，这里初始化会创建右键菜单，如果不在这里发送，那边会报错：
           // Uncaught TypeError: Cannot read properties of undefined(reading 'onMessage')
-          const obj = {
-            form: 'background',
-            title: '我是我是background！',
-            action: 'show_httplist'
-          }
+          // const obj = {
+          //   form: 'background',
+          //   title: '我是我是background！',
+          //   action: 'show_httplist'
+          // }
           // chrome.tabs.sendMessage(tab.id, obj);
           sendMessageToContentScript(tab.id, 'show_httplist');
         } else if (info.menuItemId === id) {
@@ -96,13 +96,7 @@ function sendMessageToContentScript (tabId, actionstr) {
     action: actionstr
   }
   // 因为当前文件和主页面文件不在同一上下文环境，所以在这里：发送消息、在content_scripts文件中监听
-  chrome.tabs.sendMessage(tabId, obj, function (response) {
-    if (chrome.runtime.lastError) {
-      console.error('Message failed:', chrome.runtime.lastError);
-    } else {
-      console.log('Response:', response);
-    }
-  });
+  chrome.tabs.sendMessage(tabId, obj);
 
 }
 

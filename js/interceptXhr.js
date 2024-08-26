@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-06 17:27:04
- * @LastEditTime: 2024-08-19 14:15:50
+ * @LastEditTime: 2024-08-21 09:14:27
  * @Description: 对原生的XMLHttpRequest及fetch对象做扩展来实现对请求和响应的捕获
  * @FilePath: /my-browser-plugins/js/interceptXhr.js
  */
@@ -42,6 +42,7 @@ function httpProxy (xhr) {
       const { _url, _method, _requestHeaders, responseURL, response, status, } = this
       if (_url && _url.includes('/api')) {
         const { urlObj, urlParams } = getQueryParams(responseURL)
+        // console.log('🚀🚀 ~ urlObj:', urlObj)
         const httpData = {
           date: getDate(),
           ...urlObj,
@@ -62,7 +63,7 @@ function httpProxy (xhr) {
           appendTableDom(res)
           // sessionStorage.setItem('httpList', JSON.stringify(res));
         } catch (err) {
-          console.log("拦截错误：Error in responseType try catch", err);
+          console.log("拦截错误: try catch", err);
         }
       }
     });
