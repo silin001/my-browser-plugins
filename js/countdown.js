@@ -1,8 +1,8 @@
 /*
  * @Date: 2024-05-29 15:32:23
- * @LastEditTime: 2024-08-14 16:46:32
+ * @LastEditTime: 2024-08-28 16:46:57
  * @Description: 下班倒计时、放假倒计时
- * @FilePath: /my-browser-plugins/js/countdown.js
+ * @FilePath: /safmr/Users/sisi/Desktop/myWeb/my-plugins-project/my-browser-plugins/js/countdown.js
  */
 
 const week = "日一二三四五六".charAt(new Date().getDay());
