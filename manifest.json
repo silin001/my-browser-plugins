@@ -32,7 +32,7 @@
     {
       "matches": ["<all_urls>"],
       "js": [
-        "./js/jquery.js",
+        "./js/jquery-3.5.0.js",
         "./js/units.js",
         "./js/countdown.js",
         "./js/httpIntercept.js",
@@ -63,7 +63,7 @@
       "resources": [
         "./js/*",
         "js/interceptXhr.js",
-        "js/jquery.js",
+        "js/jquery-3.5.0.js",
         "js/httpIntercept.js"
       ],
       "matches": ["*://*/*"]

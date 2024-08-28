@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-06 16:08:26
- * @LastEditTime: 2024-08-26 15:58:54
+ * @LastEditTime: 2024-08-28 15:22:47
  * @Description:  拦截http请求相关
  * @FilePath: /safmr/Users/sisi/Desktop/myWeb/my-plugins-project/my-browser-plugins/js/httpIntercept.js
  */
@@ -36,7 +36,7 @@
 /* 插入http拦截脚本(后  续请求拦截) */
 function injectedHttpScript () {
   const interceptXhr = chrome.runtime.getURL('./js/interceptXhr.js');
-  const jquery = chrome.runtime.getURL('./js/jquery.js');
+  const jquery = chrome.runtime.getURL('./js/jquery-3.5.0.js');
   const httpIntercept = chrome.runtime.getURL('./js/httpIntercept.js');
   // 加载 jQuery
   loadScript(jquery, function () {

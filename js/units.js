@@ -1,8 +1,8 @@
 /*
  * @Date: 2024-05-16 14:30:45
- * @LastEditTime: 2024-08-13 15:52:13
+ * @LastEditTime: 2024-08-28 10:46:41
  * @Description:
- * @FilePath: /my-browser-plugins/js/units.js
+ * @FilePath: /safmr/Users/sisi/Desktop/myWeb/my-plugins-project/my-browser-plugins/js/units.js
  */
 
 /** 存放全局定时器 */
@@ -59,17 +59,6 @@ function getQueryParams (url) {
     href
   };
 }
-
-
-function getDate () {
-  const dateArray = Date().split(' ')
-  const monthString = dateArray[1]
-  // 将月份转换为数字
-  const monthNumber = new Date(Date.parse(monthString + ' 1')).getMonth() + 1; // 加 1 因为 getMonth() 返回 0-11
-  return `${dateArray[3]}-${monthNumber}-${dateArray[2]}|${dateArray[4]}`
-}
-
-
 
 /* 插入 js*/
 function loadScript (url, callback) {
