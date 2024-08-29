@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-06 16:08:26
- * @LastEditTime: 2024-08-28 17:08:48
+ * @LastEditTime: 2024-08-29 09:55:32
  * @Description:  拦截http请求相关
  * @FilePath: /safmr/Users/sisi/Desktop/myWeb/my-plugins-project/my-browser-plugins/js/httpIntercept.js
  */
@@ -36,7 +36,7 @@
 /* 插入http拦截脚本(后  续请求拦截) */
 function injectedHttpScript () {
   const interceptXhr = chrome.runtime.getURL('./js/interceptXhr.js');
-  const jquery = chrome.runtime.getURL('./js/jquery-2.2.4.js');
+  const jquery = chrome.runtime.getURL('./js/jquery-3.5.0.js');
   const httpIntercept = chrome.runtime.getURL('./js/httpIntercept.js');
   // 加载 jQuery
   loadScript(jquery, function () {
@@ -57,8 +57,8 @@ function injectedHttpScript () {
 
 /* 插入dom表格 */
 function appendTableDom (list) {
-  if ($("#httpBody").length) {
-    $("#httpBody").remove()
+  if ($myjq("#httpBody").length) {
+    $myjq("#httpBody").remove()
   }
   createXhrTable(list, 'body')
 }
@@ -98,9 +98,9 @@ function createXhrTable (list, domTag) {
             </div>
           </div>
         `;
-  $(domTag).append(html)
-  $(".h_btn").click(function (e) {
-    $('#httpBody').hide(400)
+  $myjq(domTag).append(html)
+  $myjq(".h_btn").click(function (e) {
+    $myjq('#httpBody').hide(400)
   });
 }
 
@@ -137,12 +137,12 @@ function chromeOnMessage () {
     // background.js
     if (form === 'background') {
       if (action === 'hide_httplist') {
-        $('#httpBody').hide(400)
+        $myjq('#httpBody').hide(400)
         return
       }
       if (action === 'show_httplist') {
-        if ($("#httpBody").length) {
-          $("#httpBody").show(500)
+        if ($myjq("#httpBody").length) {
+          $myjq("#httpBody").show(500)
         } else {
           alert('暂无拦截http请求数据！')
         }

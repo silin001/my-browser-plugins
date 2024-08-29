@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-05-29 15:32:23
- * @LastEditTime: 2024-08-28 16:46:57
+ * @LastEditTime: 2024-08-29 09:53:50
  * @Description: 下班倒计时、放假倒计时
  * @FilePath: /safmr/Users/sisi/Desktop/myWeb/my-plugins-project/my-browser-plugins/js/countdown.js
  */
@@ -8,25 +8,25 @@
 const week = "日一二三四五六".charAt(new Date().getDay());
 /** 创建基础dom */
 function createPage (title) {
-  const page = $('<div id="my_body" title="双击可隐藏哦"></div>')
-  const box = $('<div id="my_box"></div>')
-  const icon = $('<div id="my_icon" class="hide" title="单击显示"></div>')
-  const tit = $(`<div id="my_title">${title}</div>`)
-  const motto = $(`<div id="my_motto" class="text-center"></div>`)
-  const con = $('<div id="my_ul"></div>')
+  const page = $myjq('<div id="my_body" title="双击可隐藏哦"></div>')
+  const box = $myjq('<div id="my_box"></div>')
+  const icon = $myjq('<div id="my_icon" class="hide" title="单击显示"></div>')
+  const tit = $myjq(`<div id="my_title">${title}</div>`)
+  const motto = $myjq(`<div id="my_motto" class="text-center"></div>`)
+  const con = $myjq('<div id="my_ul"></div>')
   box.append(tit)
   box.append(motto)
   box.append(con)
   page.append(box)
   page.append(icon)
-  $('body').append(page)
+  $myjq('body').append(page)
   setTitle()
   createConcentDom()
 }
 
 /** 创建内容dom */
 function createConcentDom () {
-  const dom = $(`<li class="weekendCountdown">
+  const dom = $myjq(`<li class="weekendCountdown">
          距离周五放假：
          <span class="time day"></span>天
          <span class="time hour"></span>小时
@@ -45,11 +45,11 @@ function createConcentDom () {
          <span class="time seconds"></span>秒
          </li>
        `)
-  $('#my_ul').append(dom)
+  $myjq('#my_ul').append(dom)
 }
 
 function setTitle () {
-  $('#my_title').text(`今天是星期${week}、摸鱼办提醒您：`);
+  $myjq('#my_title').text(`今天是星期${week}、摸鱼办提醒您：`);
 }
 
 /** 根据当前时间计算 下班倒计时 */
@@ -74,10 +74,10 @@ function calculateTimeUntilClosing (endh = 18, endm = 0, start = 9) {
   //  return `距离上班还有${hours}小时${minutes}分钟`;
   // }
   if (currentTime >= closingTime && closingTime.toString().includes('17:30')) {
-    $('.countdownToWork').text('5.30下班时间，可以下班啦！记得打卡！')
+    $myjq('.countdownToWork').text('5.30下班时间，可以下班啦！记得打卡！')
   }
   if (currentTime >= closingTime && closingTime.toString().includes('18:00')) {
-    $('.countdownToWork2').text('18点下班时间，可以下班啦！记得打卡！')
+    $myjq('.countdownToWork2').text('18点下班时间，可以下班啦！记得打卡！')
   }
 
   // 如果当前时间在上班时间和下班时间之间，则返回距离下班时间还有多少小时和分钟
@@ -92,9 +92,9 @@ function calculateTimeUntilClosing (endh = 18, endm = 0, start = 9) {
 function countdownToWorkFun (five30) {
   const { hours, minutes, seconds } = five30 ? calculateTimeUntilClosing(17, 30) : calculateTimeUntilClosing()
   const targetClass = five30 ? '.countdownToWork' : '.countdownToWork2';
-  $(`${targetClass} .hour`).text(hours);
-  $(`${targetClass} .min`).text(minutes);
-  $(`${targetClass} .seconds`).text(seconds);
+  $myjq(`${targetClass} .hour`).text(hours);
+  $myjq(`${targetClass} .min`).text(minutes);
+  $myjq(`${targetClass} .seconds`).text(seconds);
 }
 
 /** 周五放假倒计时 */
@@ -117,9 +117,9 @@ function weekendCountdownFun (weekTime) {
   const shengyuM = parseInt(zhuanHS / (60) % 60);
   //计算分钟的剩余秒
   // let shengyuS = parseInt(zhuanHS % 60)
-  $('.weekendCountdown .day').text(shengyuD)
-  $('.weekendCountdown .hour').text(shengyuH)
-  $('.weekendCountdown .min').text(shengyuM)
+  $myjq('.weekendCountdown .day').text(shengyuD)
+  $myjq('.weekendCountdown .hour').text(shengyuH)
+  $myjq('.weekendCountdown .min').text(shengyuM)
 }
 /** 格言 */
 function mottoFun () {
@@ -134,13 +134,13 @@ function mottoFun () {
     '磨刀不误砍柴工，玩会手机再开工',
   ]
   const txt = mottoList[Math.floor(Math.random() * 8)]
-  $('#my_motto').text(txt)
+  $myjq('#my_motto').text(txt)
 }
 /** 边界情况处理 */
 function initBoundary () {
   if (['日', '六'].includes(week)) {
     // 清空时间dom内容
-    $('#my_ul').text('已经是周末啦，要好好休息啊！')
+    $myjq('#my_ul').text('已经是周末啦，要好好休息啊！')
     return
   }
 }
@@ -163,13 +163,13 @@ myInit()
 
 // ===================================================点击事件
 /** 鼠标移入移出弹框dom添加class */
-$(function () {
+$myjq(function () {
   // const meat = '<meta name="referrer" content="no-referrer" />'
-  // $('head').append(meat)
-  $("#my_body").mouseover(function () {
-    $(this).addClass('my_dom_highlight')
+  // $myjq('head').append(meat)
+  $myjq("#my_body").mouseover(function () {
+    $myjq(this).addClass('my_dom_highlight')
   }).mouseout(function () {
-    $(this).removeClass('my_dom_highlight');
+    $myjq(this).removeClass('my_dom_highlight');
   });
 });
 
@@ -177,18 +177,18 @@ $(function () {
 
 
 /** 双击事件隐藏dom、显示icon */
-$("#my_body").dblclick(function (e) {
+$myjq("#my_body").dblclick(function (e) {
   e.stopPropagation()
-  $("#my_box").hide(300)
+  $myjq("#my_box").hide(300)
   // 这里要使用chrome.extension.getURL('本地路径') 生成一个可识别的url
   // 如果manifest_version是v3版本， 则应该用 chrome.runtime.getURL
   const imgUrl = chrome.runtime.getURL("/images/icon1.png");
   // const bennerImage = "https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e0cca2ddb9e34394a45a5e5d17f6209f~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=373&h=348&s=57889&e=png&b=fcfcfc";
-  $("#my_icon").css("background-image", "url(" + imgUrl + ")").show(600)
+  $myjq("#my_icon").css("background-image", "url(" + imgUrl + ")").show(600)
 },);
 /** 点击icon,隐藏icon、显示dom  */
-$("#my_icon").click(function (e) {
+$myjq("#my_icon").click(function (e) {
   e.stopPropagation()
-  $("#my_icon").hide(400)
-  $("#my_box").show(600)
+  $myjq("#my_icon").hide(400)
+  $myjq("#my_box").show(600)
 });
