@@ -1,6 +1,6 @@
 {
   "name": "摸鱼办",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "manifest_version": 3,
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self';"
@@ -17,13 +17,15 @@
   "commands": {
     "show_httplist": {
       "suggested_key": {
-        "default": "Ctrl+Shift+O"
+        "default": "Alt+Shift+A",
+        "windows": "Alt+Shift+A"
       },
       "description": "打开拦截http请求列表"
     },
     "hide_httplist": {
       "suggested_key": {
-        "default": "Ctrl+Shift+P"
+        "default": "Alt+Shift+Z",
+        "windows": "Alt+Shift+Z"
       },
       "description": "关闭拦截http请求列表"
     }
