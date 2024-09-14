@@ -1,8 +1,8 @@
 /*
  * @Date: 2024-08-06 17:27:04
- * @LastEditTime: 2024-08-26 16:08:22
+ * @LastEditTime: 2024-09-09 16:14:01
  * @Description: 对原生的XMLHttpRequest及fetch对象做扩展来实现对请求和响应的捕获
- * @FilePath: /safmr/Users/sisi/Desktop/myWeb/my-plugins-project/my-browser-plugins/js/interceptXhr.js
+ * @FilePath: /config-screen-demo/Users/sisi/Desktop/myWeb/my-plugins-project/my-browser-plugins/js/interceptXhr.js
  */
 
 
@@ -122,7 +122,7 @@ function getUrlParamsObj (url) {
     urlObj: {
       origin,
       api: pathname,
-      href
+      href: href.toString()
     }
   };
 }
